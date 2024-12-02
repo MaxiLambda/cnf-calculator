@@ -1,4 +1,4 @@
-package org.example;
+package lincks.maximilian.tseitin.cnf;
 
 import lincks.maximilian.parser.Parser;
 import lincks.maximilian.parser.custom.InfixOp;
@@ -13,7 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toMap;
-import static org.example.Symbols.*;
+import static lincks.maximilian.tseitin.cnf.Symbols.*;
 
 public class ParserSetup {
     //custom Operations

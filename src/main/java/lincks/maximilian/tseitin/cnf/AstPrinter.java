@@ -1,11 +1,11 @@
-package org.example;
+package lincks.maximilian.tseitin.cnf;
 
 import lincks.maximilian.parser.parser.ast.AstExpression;
 import lincks.maximilian.parser.parser.ast.Expression;
 import lincks.maximilian.parser.parser.ast.SymbolLiteral;
 import lincks.maximilian.parser.parser.ast.ValueLiteral;
 
-import static org.example.Symbols.*;
+import static lincks.maximilian.tseitin.cnf.Symbols.*;
 
 public class AstPrinter {
     public static String printString(AstExpression<?> expr) {

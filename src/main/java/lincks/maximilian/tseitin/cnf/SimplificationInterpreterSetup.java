@@ -1,4 +1,4 @@
-package org.example;
+package lincks.maximilian.tseitin.cnf;
 
 import lincks.maximilian.impl.monad.MList;
 import lincks.maximilian.parser.Interpreter;
@@ -6,7 +6,7 @@ import lincks.maximilian.parser.parser.ast.*;
 
 import java.util.Map;
 
-import static org.example.Symbols.*;
+import static lincks.maximilian.tseitin.cnf.Symbols.*;
 
 public class SimplificationInterpreterSetup {
     //Removes <> and => and propagates !

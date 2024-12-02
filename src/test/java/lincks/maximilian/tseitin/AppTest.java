@@ -1,4 +1,4 @@
-package org.example;
+package lincks.maximilian.tseitin;
 
 /**
  * Unit test for simple App.

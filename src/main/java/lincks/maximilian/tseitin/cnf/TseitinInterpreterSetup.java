@@ -1,4 +1,4 @@
-package org.example;
+package lincks.maximilian.tseitin.cnf;
 
 import lincks.maximilian.impl.monad.MList;
 import lincks.maximilian.impl.monad.Maybe;
@@ -10,7 +10,7 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.example.Symbols.*;
+import static lincks.maximilian.tseitin.cnf.Symbols.*;
 
 public class TseitinInterpreterSetup {
     private static final Context<AstExpression<?>> context = new Context<>(Map.of(
@@ -83,7 +83,28 @@ public class TseitinInterpreterSetup {
             h = new SymbolLiteral<>(new Symbol("y" + hNr));
         }
 
-        return seitinReplacement(fNr, seitinRoot, g, h);
+        AstExpression<AstExpression<?>> f = new SymbolLiteral<>(new Symbol("y" + fNr));
+        AstExpression<AstExpression<?>> fNot = (AstExpression<AstExpression<?>>)SimplificationInterpreterSetup.interpreter.run(new Expression<>(negation, new MList<>(f)));
+        AstExpression<AstExpression<?>> gNot = (AstExpression<AstExpression<?>>)SimplificationInterpreterSetup.interpreter.run(new Expression<>(negation, new MList<>(g)));
+        AstExpression<AstExpression<?>> hNot = (AstExpression<AstExpression<?>>) SimplificationInterpreterSetup.interpreter.run(new Expression<>(negation, new MList<>(h)));
+
+        var gAndh = new Expression<>(union, new MList<>(g, h));
+
+        var litE1 = new Expression<>(union, new MList<>(f, gNot));
+        var litE2 = new Expression<>(union, new MList<>(f, hNot));
+        var litE3 = new Expression<>(union, new MList<>(fNot, gAndh));
+
+        var litE4 = new Expression<>(intersection, new MList<>(litE1, litE2));
+        var tseitinF = new Expression<>(intersection, new MList<>(litE4, litE3));
+
+        Literal<AstExpression<?>> res = new ValueLiteral<>(
+                seitinRoot.map(root -> new Expression<>(
+                        intersection,
+                        new MList<>(root, tseitinF))).otherwise(tseitinF));
+
+        newFormulaNr.put(AstPrinter.printString(res),fNr);
+
+        return res;
     }
 
     private static Literal<AstExpression<?>> intersection(MList<Literal<AstExpression<?>>> l) {
@@ -116,10 +137,6 @@ public class TseitinInterpreterSetup {
             h = new SymbolLiteral<>(new Symbol("y" + hNr));
         }
 
-        return seitinReplacement(fNr, seitinRoot, g, h);
-    }
-
-    private static Literal<AstExpression<?>> seitinReplacement(int fNr, Maybe<AstExpression<AstExpression<?>>> seitinRoot, AstExpression<AstExpression<?>>g, AstExpression<AstExpression<?>> h){
         AstExpression<AstExpression<?>> f = new SymbolLiteral<>(new Symbol("y" + fNr));
         AstExpression<AstExpression<?>> fNot = (AstExpression<AstExpression<?>>)SimplificationInterpreterSetup.interpreter.run(new Expression<>(negation, new MList<>(f)));
         AstExpression<AstExpression<?>> gNot = (AstExpression<AstExpression<?>>)SimplificationInterpreterSetup.interpreter.run(new Expression<>(negation, new MList<>(g)));
